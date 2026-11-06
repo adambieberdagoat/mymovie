@@ -1,7 +1,8 @@
-require('dotenv').config()
-
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
+
+// OMDb API key
+const OMDB_KEY = '3340dff9'
 
 function createWindow() {
     const win = new BrowserWindow({
@@ -19,11 +20,8 @@ function createWindow() {
 
 // One helper for every OMDb request
 async function omdb(params) {
-    const key = process.env.OMDB_KEY
-    if (!key) throw new Error('OMDb API key is missing. Check your .env file.')
-
     const url = new URL('https://www.omdbapi.com/')
-    url.searchParams.set('apikey', key)
+    url.searchParams.set('apikey', OMDB_KEY)
     Object.entries(params).forEach(([name, value]) => url.searchParams.set(name, value))
 
     let response
@@ -50,7 +48,7 @@ ipcMain.handle('search-movies', async (event, query) => {
     return data ? data.Search : []
 })
 
-// Full details by imdbID (genre, runtime, ratings, actors, plot...)
+// Full details by imdbID
 ipcMain.handle('get-details', async (event, imdbID) => {
     if (!/^tt\d+$/.test(imdbID)) throw new Error('Invalid movie ID.')
     const data = await omdb({ i: imdbID, plot: 'short' })
