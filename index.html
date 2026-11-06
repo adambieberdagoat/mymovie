@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; img-src 'self' https: data:; style-src 'self'; script-src 'self'">
+    <title>MyMovie</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>MyMovie</h1>
+        <p>Pick tonight's film, plan the rest.</p>
+    </header>
+
+    <nav>
+        <button class="nav-btn active" data-page="discover">Discover</button>
+        <button class="nav-btn" data-page="watchlist">My Watchlist <span id="countBadge">0</span></button>
+    </nav>
+
+    <main>
+        <!-- PAGE 1: DISCOVER -->
+        <section id="discover">
+
+            <div class="panel">
+                <h2>Help me choose</h2>
+                <p class="hint">Tell us your mood, how long you have and a word to search for. We check each movie and keep only the ones that fit.</p>
+                <form id="suggestForm" class="row">
+                    <label>Mood
+                        <select id="mood">
+                            <option value="happy">Happy</option>
+                            <option value="excited">Excited</option>
+                            <option value="romantic">Romantic</option>
+                            <option value="scared">Want a scare</option>
+                            <option value="curious">Curious</option>
+                            <option value="emotional">Emotional</option>
+                        </select>
+                    </label>
+                    <label>Time available
+                        <select id="timeAvailable">
+                            <option value="short">Under 1.5 hours</option>
+                            <option value="medium">Under 2 hours 10 minutes</option>
+                            <option value="long">No limit</option>
+                        </select>
+                    </label>
+                    <label>Search word (e.g. star, love, night)
+                        <input type="text" id="suggestWord" placeholder="A word in the title">
+                    </label>
+                    <button type="submit">Suggest movies</button>
+                </form>
+                <p id="lastSuggestion" class="hint"></p>
+            </div>
+
+            <form id="searchForm" class="row">
+                <input type="text" id="movieSearch" placeholder="Search a movie title..." aria-label="Movie title">
+                <button type="submit">Search</button>
+            </form>
+
+            <p id="message" class="message"></p>
+            <div id="movieResults"></div>
+        </section>
+
+        <!-- PAGE 2: WATCHLIST -->
+        <section id="watchlist" hidden>
+            <h2>My Watchlist</h2>
+
+            <div class="panel">
+                <h3>Viewing time planner</h3>
+                <form id="planForm" class="row">
+                    <label>Hours I can watch per day
+                        <input type="number" id="hoursPerDay" step="0.5" value="2">
+                    </label>
+                    <button type="submit">Calculate</button>
+                </form>
+                <p id="planMessage" class="message"></p>
+                <ul id="planResult" class="stats"></ul>
+            </div>
+
+            <p id="listMessage" class="message"></p>
+            <div id="watchlistItems"></div>
+        </section>
+    </main>
+
+    <dialog id="detailsDialog">
+        <div id="detailsBody"></div>
+        <button type="button" id="closeDetails" class="secondary">Close</button>
+    </dialog>
+
+    <dialog id="editDialog">
+        <form id="editForm">
+            <h3 id="editTitle"></h3>
+            <label>Status
+                <select id="editStatus">
+                    <option>Planned</option>
+                    <option>Watched</option>
+                </select>
+            </label>
+            <label>My note (max 120 characters)
+                <textarea id="editNote" rows="3"></textarea>
+            </label>
+            <p id="editMessage" class="message"></p>
+            <div class="row">
+                <button type="submit">Save changes</button>
+                <button type="button" id="cancelEdit" class="secondary">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="renderer.js"></script>
+</body>
+</html>
